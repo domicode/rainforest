@@ -1,11 +1,17 @@
 class ProductsController < ApplicationController
 
+  before_filter :ensure_logged_in, :only => [:show]
+
   def index
     @products = Product.all
   end
 
   def show
     @product = Product.find(params[:id])
+    @review = Review.new
+    if current_user
+      @review = @product.reviews.build
+    end
   end
 
   def new
